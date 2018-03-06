@@ -20,7 +20,7 @@ class ActiveRecord::Base
               # with some gems like paranoid.
               table = respond_to?(:klass) ? table.klass : self
 
-              table.select(:id).joins("INNER JOIN \"#{ttable}\"
+              table.select(:id).joins("INNER JOIN \`#{ttable}\`
                 ON (\`#{ttable}\`.resource_id = \`#{arel_table.name}\`.id
                 AND \`#{ttable}\`.resource_type = '#{to_s}')")
               .group(:resource_type, :resource_id, "#{arel_table.name}.id")
