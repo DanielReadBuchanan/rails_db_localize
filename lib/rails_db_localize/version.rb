@@ -1,3 +1,3 @@
 module RailsDbLocalize
-  VERSION = "0.0.9"
+  VERSION = "01.00.00"
 end
