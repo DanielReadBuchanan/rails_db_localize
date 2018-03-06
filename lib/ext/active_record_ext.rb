@@ -21,8 +21,8 @@ class ActiveRecord::Base
               table = respond_to?(:klass) ? table.klass : self
 
               table.select(:id).joins("INNER JOIN \"#{ttable}\"
-                ON (\"#{ttable}\".resource_id = \"#{arel_table.name}\".id
-                AND \"#{ttable}\".resource_type = '#{to_s}')")
+                ON (\`#{ttable}\`.resource_id = \`#{arel_table.name}\`.id
+                AND \`#{ttable}\`.resource_type = '#{to_s}')")
               .group(:resource_type, :resource_id, "#{arel_table.name}.id")
               .having("COUNT(*) = #{number_of_fields_to_translates}")
               .where(:"rails_db_localize_translations.lang" => lang)
@@ -30,12 +30,12 @@ class ActiveRecord::Base
 
             # Return all rows with missing translation for a selected language.
             scope :missing_translation, lambda{ |lang|
-              where("\"#{arel_table.name}\".id NOT IN (#{__rails_db_translations_sub_query(lang).to_sql})")
+              where("\`#{arel_table.name}\`.id NOT IN (#{__rails_db_translations_sub_query(lang).to_sql})")
             }
 
             # Return all rows with translation OK for a selected language.
             scope :having_translation, lambda{ |lang|
-              where("\"#{arel_table.name}\".id IN (#{__rails_db_translations_sub_query(lang).to_sql})")
+              where("\`#{arel_table.name}\`.id IN (#{__rails_db_translations_sub_query(lang).to_sql})")
             }
 
             def self.preload_translations
