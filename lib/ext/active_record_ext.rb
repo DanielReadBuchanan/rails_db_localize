@@ -33,6 +33,11 @@ class ActiveRecord::Base
               where("\`#{arel_table.name}\`.id NOT IN (#{__rails_db_translations_sub_query(lang).to_sql})")
             }
 
+            # Return all rows with missing translation for a selected language, with specific field.
+            scope :missing_field_translation, lambda{ |lang, field|
+              where("\`#{arel_table.name}\`.id NOT IN (#{__rails_db_translations_sub_query(lang).where('`rails_db_localize_translations`.field = #{field}').to_sql})")
+            }
+
             # Return all rows with translation OK for a selected language.
             scope :having_translation, lambda{ |lang|
               where("\`#{arel_table.name}\`.id IN (#{__rails_db_translations_sub_query(lang).to_sql})")
